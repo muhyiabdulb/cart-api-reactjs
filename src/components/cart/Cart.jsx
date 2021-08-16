@@ -6,7 +6,7 @@ import { Image, Table } from 'react-bootstrap'
 const Cart = (props) => {
     const [carts, setCarts] = useState([])
     const [sum, setSum] = useState(0)
-    const [pay, setPay] = useState(0)
+    const [pay, setPay] = useState()
     const [returns, setReturns] = useState(0)
     const [validate, setValidate] = useState(false)
 
@@ -73,10 +73,10 @@ const Cart = (props) => {
 
             if(sum === 0) {
                 setValidate(false)
-            } else if(sum > 0) {
+            } else if(sum >= 1) {
                 setValidate(true)
             }
-
+            
         } else {
             console.log('qty kosong')
         }
@@ -93,6 +93,8 @@ const Cart = (props) => {
             console.log('ini kembalian' + returns)
             setReturns(returns)
         } else {
+            setPay(0)
+            console.log(pay)
             setReturns(0)
         }
     }
@@ -145,7 +147,7 @@ const Cart = (props) => {
                         <th colSpan={5}>Pay</th>
                         <th>
                             Rp {
-                                validate ? <input name="pay" type="number" onChange={handleInputPay} /> : 0
+                                validate ? <input name="pay" type="number" value={pay === 0 ? 0 : pay} onChange={handleInputPay} /> : 0
                             } 
                         </th>
                     </tr>
