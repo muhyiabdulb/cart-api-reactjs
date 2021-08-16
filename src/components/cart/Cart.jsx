@@ -52,10 +52,10 @@ const Cart = (props) => {
             console.log("ini id" + id)
             // setCarts(carts[0]['qty'] = 90)
             // console.log(carts[13]['qty'])
-            //Find index of specific object using findIndex method.    
+            // Find index of specific object using findIndex method.    
             const objIndex = carts.findIndex((obj => obj.id == id));
             console.log(carts[objIndex])
-            //Update object's name property.
+            // Update object's name property.
             const updateQty = parseFloat(carts[objIndex].qty = value) 
             // console.log(updateQty)
             const price = parseFloat(carts[objIndex].price)
@@ -77,11 +77,10 @@ const Cart = (props) => {
             } else if(sum > 0) {
                 setValidate(true)
             }
+            
         } else {
             console.log('qty kosong')
         }
-
-        // validasi nann
     }
 
     const handleInputPay = (event) => {
