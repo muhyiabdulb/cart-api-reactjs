@@ -1,4 +1,3 @@
-import { Button } from 'bootstrap'
 import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
@@ -77,7 +76,7 @@ const Cart = (props) => {
             } else if(sum > 0) {
                 setValidate(true)
             }
-            
+
         } else {
             console.log('qty kosong')
         }
