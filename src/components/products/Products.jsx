@@ -1,62 +1,63 @@
-import React, { useEffect, useState } from 'react'
+import React, { Component } from 'react'
 import { Card, Button, Row, Col, Image, Figure } from 'react-bootstrap'
 
-const Products = (props) => {
-    const [loading, setLoading] = useState(false)
-    const [products, setProducts] = useState([])
-
-    async function getListProduct() {
-        setLoading(true)
-        // await fetch('https://fakestoreapi.com/products')
-        //     .then(res=>res.json())
-        //     .then(json=>setProducts(json))
-        const response = await fetch(`https://fakestoreapi.com/products`)
-        const json = await response.json()
-        setProducts(json)
-        setLoading(false)
+class Products extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          products: [],
+          loading: true
+        };
     }
-
-    useEffect(() => {
-        getListProduct()
-    }, [])
-
-    return(
-        <div>
+    
+    componentDidMount() {
+        fetch("https://fakestoreapi.com/products")
+            .then(res => res.json())
+            .then(parsedJSON => parsedJSON)
+            .then(products => this.setState({
+                products,
+                loading: false
+            }))
+        .catch(error => console.log('parsing failed', error))
+    }
+    
+    render() {
+        const { products, loading } = this.state;
+        return (
+            <div className="boxWhite">
             <h2>List Products</h2>
-            <Row >
-            { 
-                // console.log(products)
-                loading ? <h3 className="center">Loading ...</h3> : products.map((product) => {
-                    return(
-                        <Col md={6}>
-                            <Figure key={product.id}>
-                                <Image src={product.image}  
+                <Row>
+                    {
+                        loading ? <h3 className="center">Loading ...</h3> : products.map(item => {
+                        const {id, title, price, category, image} = item;
+                        return (
+                            <Col md={6} key={id}>
+                                <Figure>
+                                    <Image src={image}  
                                     width={120}
                                     height={120} 
                                     thumbnail/>
-                                <Figure.Caption>
-                                    <Card.Body>
-                                        <Card.Title>{product.title}</Card.Title>
-                                        <Card.Text>
-                                            Rp {product.price}
-                                        </Card.Text>
-                                        <Card.Text>
-                                            {product.category}
-                                        </Card.Text>
-                                        {/* <Card.Text>
-                                            {product.description}
-                                        </Card.Text> */}
-                                        <Button variant="primary" onClick={() => props.add(product.id)}>Add to Cart</Button>
-                                    </Card.Body>
-                                </Figure.Caption>
-                            </Figure>
-                        </Col>
-                    )
-                })
-            }
-            </Row>
-        </div>
-    )
+                                    <Figure.Caption>
+                                        <Card.Body>
+                                            <Card.Title>{title}</Card.Title>
+                                            <Card.Text>
+                                                Rp {price}
+                                            </Card.Text>
+                                            <Card.Text>
+                                                {category}
+                                            </Card.Text>
+                                            <Button variant="primary" onClick={() => this.props.add(id)}>Add to Cart</Button>
+                                        </Card.Body>
+                                    </Figure.Caption>
+                                </Figure>
+                            </Col>
+                        )
+                        })
+                    }
+                </Row>
+            </div>
+        )
+    }
 }
 
 export default Products
